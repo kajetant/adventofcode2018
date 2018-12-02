@@ -1,4 +1,4 @@
-from itertools import groupby
+from itertools import groupby, filterfalse
 
 def get_input(filename):
     with open(filename) as f:
@@ -22,17 +22,44 @@ def solve1(input):
 
 
 def solve2(input):
-    pass
+
+    def are_similar(a: str, b: str):
+        if len(a) != len(b):
+            return False
+
+        diff = 0
+
+        for i in range(0, len(a)):
+            if a[i] == b[i]:
+                continue
+            else:
+                diff += 1
+
+            if diff > 1:
+                return False
+
+        return True
+
+    def get_common(a: str, b: str):
+        return ''.join(filter(lambda x: x is not None, [(yield a[i] if a[i] == b[i] else None) for i in range(0, len(a))]))
+
+    for i in range(0, len(input) - 1):
+        a = input[i]
+
+        for j in range(i + 1, len(input)):
+            b = input[j]
+
+            if are_similar(a, b) == True:
+                return get_common(a, b)
+
+    return None
 
 
 if __name__ == "__main__":
-
-    #input = ['abcdef', 'bababc', 'abbcde', 'abcccd', 'aabcdd', 'abcdee', 'ababab']
-
     input = get_input('D:\\repos\\adventofcode2018\\AOC02\\input01.io')
 
     result1 = solve1(input) #result1 => 7776
     print(f'The result is: {result1}')
 
-    #result2 = solve2(input) # result 2 => 57538
-    #print(f'The result is: {result2}')
+    result2 = solve2(input) # result 2 => wlkigsqyfecjqqmnxaktdrhbz
+    print(f'The result is: {result2}')
