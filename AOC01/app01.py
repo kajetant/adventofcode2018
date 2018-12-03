@@ -1,34 +1,20 @@
+from itertools import cycle
 
 def get_input(filename):
     with open(filename) as f:
-        content = f.readlines()
-
-    return [x.strip() for x in content]
+        return [x.strip() for x in f.readlines()]
 
 def solve1(input):
-    result = 0
-
-    for x in input:
-        result += int(x)
-
-    return result
+    return sum([int(x) for x in input])
 
 
 def solve2(input):
-    # input is circular - may be needed to reiterate over and over again
-    length = len(input)
-
     occurences = set()
     occurences.add(0)
-
-    ix = -1
     curr_value = 0
 
-    while True:
-
-        ix = 0 if ix == length - 1 else ix + 1
-
-        curr_value += int(input[ix])
+    for x in cycle(input):
+        curr_value += int(x)
 
         if curr_value in occurences:
             return curr_value
