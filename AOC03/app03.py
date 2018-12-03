@@ -22,6 +22,13 @@ class Claim(object):
 
         return Claim(int(x[1]), int(x[2]), int(x[3]), int(x[4]), int(x[5]))
 
+    def is_overlapped(self, c):
+        return (
+            self.x1 < c.x2 and
+            self.x2 > c.x1 and
+            self.y1 < c.y2 and
+            self.y2 > c.y1)
+
 
 def solve1(input):
 
@@ -44,15 +51,34 @@ def solve1(input):
     return result
 
 def solve2(input):
+
+    for i in range(0, len(input)):
+        c1 = input[i]
+
+        is_overlapped = False
+
+        for j in range(0, len(input)):
+            if i == j: continue
+
+            c2 = input[j]
+
+            if c1.is_overlapped(c2):
+                is_overlapped = True
+                break
+
+        if is_overlapped == False:
+            return c1.id
+
     return None
 
 
 if __name__ == "__main__":
     input = get_input('D:\\repos\\adventofcode2018\\AOC03\\input.io')
+
     parsed_input = list(map(Claim.parse, input))
 
     result1 = solve1(parsed_input) #result1 => 107820
     print(f'The result is: {result1}')
 
-    result2 = solve2(input) # result 2 =>
+    result2 = solve2(parsed_input) # result 2 => 661
     print(f'The result is: {result2}')
