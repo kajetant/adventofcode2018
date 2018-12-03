@@ -1,4 +1,6 @@
 import re
+from itertools import count
+from functools import reduce
 
 def get_input(filename):
     with open(filename) as f:
@@ -52,24 +54,8 @@ def solve1(input):
 
 def solve2(input):
 
-    for i in range(0, len(input)):
-        c1 = input[i]
-
-        is_overlapped = False
-
-        for j in range(0, len(input)):
-            if i == j: continue
-
-            c2 = input[j]
-
-            if c1.is_overlapped(c2):
-                is_overlapped = True
-                break
-
-        if is_overlapped == False:
-            return c1.id
-
-    return None
+    for c1 in input:
+        if all(map(lambda c2: not c1.is_overlapped(c2), filter(lambda c2: c1.id != c2.id, input))): return c1.id
 
 
 if __name__ == "__main__":
