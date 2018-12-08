@@ -1,4 +1,4 @@
-from itertools import groupby, filterfalse
+from itertools import groupby, filterfalse, product
 
 def get_input(filename):
     with open(filename) as f:
@@ -43,14 +43,9 @@ def solve2(input):
     def get_common(a: str, b: str):
         return ''.join(filter(lambda x: x is not None, [(yield a[i] if a[i] == b[i] else None) for i in range(0, len(a))]))
 
-    for i in range(0, len(input) - 1):
-        a = input[i]
-
-        for j in range(i + 1, len(input)):
-            b = input[j]
-
-            if are_similar(a, b) == True:
-                return get_common(a, b)
+    for a, b in product(input, input):
+        if a != b and are_similar(a, b) == True:
+            return get_common(a, b)
 
     return None
 
