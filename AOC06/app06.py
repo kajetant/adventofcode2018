@@ -53,18 +53,37 @@ def solve1(points: List[Point]):
 
 
 def solve2(points: List[Point]):
-    pass
+
+    safe_distance = 10000
+
+    min_x = min(points, key=lambda p: p.x).x
+    min_y = min(points, key=lambda p: p.y).y
+    max_x = max(points, key=lambda p: p.x).x
+    max_y = max(points, key=lambda p: p.y).y
+
+    area_by_point = [0 for i in range(0, len(points))]
+    safe_area = 0
+
+    for x in range(min_x, max_x + 1):
+        for y in range(min_y, max_y + 1):
+
+            distances = [(i, dist(points[i], Point(x, y))) for i in range(0, len(points))]
+
+            total_distance = sum([x[1] for x in distances])
+
+            if total_distance < safe_distance:
+                safe_area += 1
+
+    return safe_area
 
 
 if __name__ == "__main__":
     input = get_input('D:\\repos\\adventofcode2018\\AOC06\\input.io')
-
-    #input = ['1, 1', '1, 6', '8, 3', '3, 4', '5, 5', '8, 9']
 
     parsed_input = list(map(parse_line, input))
 
     result1 = solve1(parsed_input) #result1 => 3687
     print(f'The result is: {result1}')
 
-    result2 = solve2(parsed_input) # result 2 =>
+    result2 = solve2(parsed_input) # result 2 => 40134
     print(f'The result is: {result2}')
